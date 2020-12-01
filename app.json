@@ -23,7 +23,10 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "jp.ddns.iwabuchi.PocketMoneyBook",
+      "versionCode": 4,
+      "permissions": []
     },
     "web": {
       "favicon": "./assets/favicon.png"
