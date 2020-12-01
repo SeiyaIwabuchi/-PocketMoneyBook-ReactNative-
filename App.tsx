@@ -8,31 +8,12 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native';
 import Icons from 'react-native-vector-icons/MaterialIcons';
 import { Header } from 'react-native-elements';
-import * as SQLite from 'expo-sqlite';
-import DatabaseConfig from './DatabaseConfig';
-
-function createTable() {
-    const db = SQLite.openDatabase(DatabaseConfig.databaseName);
-	db.transaction((tx) => {
-		tx.executeSql(
-			"create table if not exists " + DatabaseConfig.tableName + "(" + 
-                "id integer primary key not null," +
-                "kind varchar(8)," +
-                "content varchar(32)," +
-                "price varchar(8)," +
-                ")",
-			undefined,
-			() => { console.log("create table success") },
-			(error) => { console.log(error); return false; }
-		);
-	},
-		() => { console.log("create table fail") },
-		() => { console.log("create table success") }
-	);
-}
+import {deleteTable,createTable, insertToDb} from './DatabaseOperation';
+import BalanceData from './BalanceData';
 
 function initDB(){
-    createTable(); //テーブル作成
+	deleteTable(); //テーブル削除
+	createTable(); //テーブル作成
 }
 
 const Tab = createBottomTabNavigator();

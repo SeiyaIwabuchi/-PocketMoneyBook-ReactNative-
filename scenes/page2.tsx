@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import { View,Text } from "react-native";
 import {Picker} from '@react-native-community/picker'
 import { Button, Input } from "react-native-elements";
-import list from '../Datalist';
 import BalanceData from "../BalanceData";
 import { Snackbar } from 'react-native-paper';
+import {insertToDb} from "../DatabaseOperation";
+
 interface IProps{
     navigation:any;
 }
 
 export default function page2(props:IProps){
     const [dateText,setDateText] = useState("");
-    const [kindText,setKindText] = useState("out");
+    const [kindText,setKindText] = useState("支出");
     const [contentText,setContentText] = useState("");
     const [priceText,setPriceText] = useState("");
     const [visible, setVisible] = React.useState(false);
@@ -28,14 +29,14 @@ export default function page2(props:IProps){
                         setKindText(item.toString());
                     }}
                     >
-                    <Picker.Item label={"支出"} value={"out"}/>
-                    <Picker.Item label={"収入"} value={"in"}/>
+                    <Picker.Item label={"支出"} value={"支出"}/>
+                    <Picker.Item label={"収入"} value={"収入"}/>
                 </Picker>
                 <Input placeholder={"事柄"} containerStyle={{marginBottom:"10%"}} value={contentText} onChangeText={(event)=>{setContentText(event)}}/>
                 <Input placeholder={"金額"} containerStyle={{marginBottom:"10%"}} value={priceText} onChangeText={(event)=>{setPriceText(event)}}/>
                 <Button title={"登録"} onPress={()=>{
-                    list.push(new BalanceData(dateText,kindText==="out"?"支出":"収入",contentText,priceText));
                     setVisible(true);
+                    insertToDb(new BalanceData(dateText,kindText,contentText,priceText));
                 }}/>
             </View>
             <Snackbar
