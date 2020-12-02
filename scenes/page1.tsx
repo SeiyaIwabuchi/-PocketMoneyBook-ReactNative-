@@ -12,18 +12,26 @@ interface IProps {
     navigation: any;
 }
 
-function calcBalance(balanceDataList:BalanceData[],setThisMonthSetter:(text:string)=>void){
+function calcBalance(
+    balanceDataList:BalanceData[],
+    setThisMonthSetter:(text:string)=>void,
+    setThisWeek:(text:string)=>void,
+    setToday:(text:string)=>void
+    ){
     let balance = 0;
+    let toDay = new Date();
+    let daysLeftThisMonth = new Date(toDay.getFullYear(),toDay.getMonth() + 1, 0).getDate() - toDay.getDate() + 1; //今月の残り日数（当日を含む）
+    let daysLeftThisWeek = 7 - toDay.getDay();
     balanceDataList.forEach((balanceData)=>{
-        console.log("よびだされた！");
         let price = parseInt(balanceData.price);
         if(isNaN(price) === false){
             if(balanceData.kind === "収入") balance += price;
             else balance -= price;
         }
     });
-    console.log(balance)
     setThisMonthSetter("￥" + (balance.toString()));
+    setThisWeek(`￥${Math.floor((balance/daysLeftThisMonth)*daysLeftThisWeek).toString()}`)
+    setToday(`￥${Math.floor(balance/daysLeftThisMonth).toString()}`);
 }
 
 export default function page1(props: IProps) {
@@ -34,10 +42,10 @@ export default function page1(props: IProps) {
     const renderItem = ({ item }: { item: BalanceData }) => (
         <ListItem bottomDivider>
             <ListItem.Content style={{ flexDirection: "row" }}>
-                <Text style={{ textAlign: "center", width: "25%", fontSize: 20 }}>{item.date}</Text>
-                <Text style={{ textAlign: "center", width: "25%", fontSize: 20 }}>{item.kind}</Text>
-                <Text style={{ textAlign: "center", width: "25%", fontSize: 20 }}>{item.content}</Text>
-                <Text style={{ textAlign: "center", width: "25%", fontSize: 20 }}>{"￥" + item.price}</Text>
+                <Text style={{ textAlign: "center", width: "25%", fontSize: normalize(20) }}>{item.date}</Text>
+                <Text style={{ textAlign: "center", width: "25%", fontSize: normalize(20) }}>{item.kind}</Text>
+                <Text style={{ textAlign: "center", width: "25%", fontSize: normalize(20) }}>{item.content}</Text>
+                <Text style={{ textAlign: "center", width: "25%", fontSize: normalize(20) }}>{"￥" + item.price}</Text>
             </ListItem.Content>
         </ListItem>
     );
@@ -45,7 +53,7 @@ export default function page1(props: IProps) {
     useFocusEffect(
         React.useCallback(()=>{
             select(setBalanceDataList,(list:BalanceData[])=>{
-                calcBalance(list,setThisMonth);
+                calcBalance(list,setThisMonth,setThisWeek,setThisToday);
             });
         },[])
     );
