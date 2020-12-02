@@ -71,13 +71,14 @@ export function deleteTable() {
 	);
 }
 
-export function select(setDataHandle: (t: BalanceData[]) => void,successCallBack:(list:BalanceData[])=>void) {
+export function select(setDataHandle: (t: BalanceData[]) => void,successCallBack:(list:BalanceData[])=>void,filter?:string) {
     type model = typeof DatabaseConfig.model;
     const db = SQLite.openDatabase(DatabaseConfig.databaseName);
-    let list:BalanceData[] = [];
+	let list:BalanceData[] = [];
+	console.log(`select * from ${DatabaseConfig.tableName} ${filter===undefined?"":`where ${filter}`}`);
     db.transaction((tx) => {
         tx.executeSql(
-            "select * from " + DatabaseConfig.tableName,
+            `select * from ${DatabaseConfig.tableName} ${filter===undefined?"":`where ${filter}`}`,
             undefined,
             (_, { rows: SQLResultSetRowList }) => {
                 list.push(new BalanceData("日付","種類","事柄","金額"));

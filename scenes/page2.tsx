@@ -4,11 +4,14 @@ import {Picker} from '@react-native-community/picker'
 import { Button, Input } from "react-native-elements";
 import BalanceData from "../BalanceData";
 import { Snackbar } from 'react-native-paper';
-import {insertToDb} from "../DatabaseOperation";
+import {insertToDb, select} from "../DatabaseOperation";
 import { useFocusEffect } from '@react-navigation/native' ;
+import { NavigationScreenProp, NavigationState, NavigationParams } from "react-navigation";
+import AsyncStorage from '@react-native-community/async-storage';
+
 
 interface IProps{
-    navigation:any;
+    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
 }
 
 export default function page2(props:IProps){
@@ -16,10 +19,18 @@ export default function page2(props:IProps){
     const [kindText,setKindText] = useState("支出");
     const [contentText,setContentText] = useState("");
     const [priceText,setPriceText] = useState("");
-    const [visible, setVisible] = React.useState(false);
+    const [visible, setVisible] = useState(false);
+    const [currentId,setCurrentId] = useState(-1);
+    const [balanceDataList,setBalanceDataList] = useState<BalanceData[]>([]);
     useFocusEffect(
         React.useCallback(()=>{
-            console.log(new Date());
+            AsyncStorage.getItem("currentItemId",(error)=>{console.log(error)})
+            .then((Id)=>{
+                if(Id !== null){
+                    setCurrentId(parseInt(Id));
+                    select(setBalanceDataList,(list)=>{},`id=${Id}`);
+                }
+            })
         },[])
     );
     return(

@@ -7,9 +7,11 @@ import * as SQLite from 'expo-sqlite';
 import BalanceData from '../BalanceData'
 import IBalanceData from "../IBalanceData";
 import {select} from "../DatabaseOperation";
+import { NavigationParams, NavigationScreenProp, NavigationState } from "react-navigation";
+import AsyncStorage from '@react-native-community/async-storage';
 
 interface IProps {
-    navigation: any;
+    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
 }
 
 function calcBalance(
@@ -40,7 +42,10 @@ export default function page1(props: IProps) {
     const [thisWeek,setThisWeek] = useState("￥0");
     const [today,setThisToday] = useState("￥0");
     const renderItem = ({ item }: { item: BalanceData }) => (
-        <ListItem bottomDivider>
+        <ListItem bottomDivider onPress={()=>{
+            AsyncStorage.setItem("currentItemId",item.id.toString(),(error)=>{console.log(error)});
+            props.navigation.navigate("INPUT");
+        }}>
             <ListItem.Content style={{ flexDirection: "row" }}>
                 <Text style={{ textAlign: "center", width: "25%", fontSize: normalize(20) }}>{item.date}</Text>
                 <Text style={{ textAlign: "center", width: "25%", fontSize: normalize(20) }}>{item.kind}</Text>
