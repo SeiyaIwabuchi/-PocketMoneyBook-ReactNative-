@@ -12,8 +12,8 @@ import {deleteTable,createTable, insertToDb} from './DatabaseOperation';
 import BalanceData from './BalanceData';
 
 function initDB(){
-	deleteTable(); //テーブル削除
-	createTable(); //テーブル作成
+	//deleteTable(); //テーブル削除
+	//createTable(); //テーブル作成
 }
 
 const Tab = createBottomTabNavigator();
@@ -46,13 +46,6 @@ export default function App() {
 	},[]);
 	return (
 		<View style={{ height: "99%" }}>
-			<Header
-				leftComponent={{ icon: "menu" }}
-				centerComponent={{ text: "お貧乏様", style: { fontSize: 20 } }}
-				rightComponent={{ icon: "refresh" ,onPress:()=>{
-					setRefText(Date.now());
-				}}}
-			/>
 			<NavigationContainer>
 				<Tab.Navigator initialRouteName={"HOME"} screenOptions={
 					({ route }) => ({

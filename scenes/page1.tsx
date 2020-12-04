@@ -1,7 +1,7 @@
 import { View, Text, FlatList, PixelRatio, Dimensions, Platform, ImageBackground } from "react-native";
 import React, { useEffect, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native' ;
-import { Avatar, ListItem } from "react-native-elements";
+import { Avatar, Header, ListItem } from "react-native-elements";
 import normalize from '../normalize';
 import * as SQLite from 'expo-sqlite';
 import BalanceData from '../BalanceData'
@@ -9,6 +9,7 @@ import IBalanceData from "../IBalanceData";
 import {select} from "../DatabaseOperation";
 import { NavigationParams, NavigationScreenProp, NavigationState } from "react-navigation";
 import AsyncStorage from '@react-native-community/async-storage';
+import Icons from 'react-native-vector-icons/MaterialIcons';
 
 interface IProps {
     navigation: NavigationScreenProp<NavigationState, NavigationParams>;
@@ -64,6 +65,10 @@ export default function page1(props: IProps) {
     );
     return (
         <View style={{ height: "100%" }}>{/* ページコンテナ */}
+            <Header
+				leftComponent={{ icon: "menu" }}
+				centerComponent={{ text: "お貧乏様", style: { fontSize: 20 } }}
+			/>
             <View style={{ alignItems: "center", justifyContent: "center", height: "45%" }}>{/* 金額表示コンテナ */}
                 <View style={{ alignItems: "center", justifyContent: "center", height: "60%", width: "100%" }}>{/* 今日表示コンテナ */}
                     <View style={{ alignItems: "center", justifyContent: "flex-end", height: "30%", width: "100%" }}>
