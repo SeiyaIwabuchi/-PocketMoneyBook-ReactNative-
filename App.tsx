@@ -13,7 +13,7 @@ import BalanceData from './BalanceData';
 
 function initDB(){
 	//deleteTable(); //テーブル削除
-	//createTable(); //テーブル作成
+	createTable(); //テーブル作成
 }
 
 const Tab = createBottomTabNavigator();
@@ -47,7 +47,7 @@ export default function App() {
 	return (
 		<View style={{ height: "99%" }}>
 			<NavigationContainer>
-				<Tab.Navigator initialRouteName={"HOME"} screenOptions={
+				<Tab.Navigator initialRouteName={"SETTINGS"} screenOptions={
 					({ route }) => ({
 						tabBarIcon: ({ focused, color, size }) => {
 							let iconName = "";

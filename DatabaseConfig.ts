@@ -2,7 +2,7 @@ import React from 'react';
 import BalanceData from './BalanceData';
 const DatabaseConfig = {
     databaseName:"testDB",
-    tableName:"balance",
-    model:BalanceData,
+    tableNames:["balance"],
+    models:[BalanceData],
 };
 export default DatabaseConfig;

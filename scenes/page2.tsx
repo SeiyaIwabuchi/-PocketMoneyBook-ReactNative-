@@ -4,7 +4,7 @@ import { Picker } from '@react-native-community/picker'
 import { Button, Header, Input } from "react-native-elements";
 import BalanceData from "../BalanceData";
 import { Snackbar } from 'react-native-paper';
-import { deleteById, insertToDb, select } from "../DatabaseOperation";
+import { deleteById, insertToDb, select, update } from "../DatabaseOperation";
 import { useFocusEffect } from '@react-navigation/native';
 import { NavigationScreenProp, NavigationState, NavigationParams } from "react-navigation";
 import AsyncStorage from '@react-native-community/async-storage';
@@ -16,35 +16,45 @@ interface IProps {
 }
 
 export default function page2(props: IProps) {
-	const [dateText, setDateText] = useState(`${new Date().getMonth()}/${new Date().getDate()}`);
-	const [kindText, setKindText] = useState("支出");
+	const [dateText, setDateText] = useState(`${new Date().getMonth()+1}/${new Date().getDate()}`);
+	const [kindText, setKindText] = useState<"収入"|"支出">("支出");
 	const [contentText, setContentText] = useState("");
 	const [priceText, setPriceText] = useState("");
 	const [visible, setVisible] = useState(false);
 	const [currentId, setCurrentId] = useState(-1);
 	const [balanceDataList, setBalanceDataList] = useState<BalanceData[]>([]);
+	const [mode,setMode] = useState<"add"|"edit">("add");
+	const [mainKey,setMainKey] = useState(-1);
 	useFocusEffect(
 		React.useCallback(() => {
-			AsyncStorage.getItem("currentItemId", (error) => { console.log(error) })
+			AsyncStorage.getItem("currentItemId", (error,result) => { console.log(error);console.log(result) })
 				.then((Id) => {
 					if (Id !== null) {
+						setMode("edit");
 						setCurrentId(parseInt(Id));
 						select(setBalanceDataList, (list) => {
 							if (list.length > 1) {
-								console.log(list);
+								setMainKey(list[1].id);
 								setDateText(list[1].date);
-								setKindText(list[1].kind);
+								if (list[1].kind === "支出" || list[1].kind === "収入") setKindText(list[1].kind);
 								setContentText(list[1].content);
 								setPriceText(list[1].price);
 								setCurrentId(list[1].id);
 							}
 						}, `id=${Id}`);
+					}else{
+						setMode("add");
+						setDateText(`${new Date().getMonth()+1}/${new Date().getDate()}`);
+						setKindText("支出");
+						setContentText("");
+						setPriceText("");
 					}
-				})
+				});
+			AsyncStorage.removeItem("currentItemId");
 		}, [])
 	);
 	return (
-		<View style={{width:"100%",height:"95%"}}>
+		<View style={{width:"100%",height:"85%"}}>
 			<Header
 					leftComponent={{ icon: "menu" }}
 					centerComponent={{ text: "お貧乏様", style: { fontSize: 20 } }}
@@ -62,7 +72,8 @@ export default function page2(props: IProps) {
 					}}
 						selectedValue={kindText}
 						onValueChange={(item, index) => {
-							setKindText(item.toString());
+							const tItem = item.toString();
+							if(tItem === "支出" || tItem === "収入") setKindText(tItem);
 						}}
 					>
 						<Picker.Item label={"支出"} value={"支出"} />
@@ -72,7 +83,13 @@ export default function page2(props: IProps) {
 					<Input placeholder={"金額"} containerStyle={{ marginBottom: "10%" }} value={priceText} onChangeText={(event) => { setPriceText(`${event}`) }} />
 					<Button title={"登録"} onPress={() => {
 						setVisible(true);
-						insertToDb(new BalanceData(dateText, kindText, contentText, priceText));
+						console.log(mode);
+						console.log(mainKey);
+						if(mode === "add"){
+							insertToDb(new BalanceData(dateText, kindText, contentText, priceText));
+						}else{
+							update(new BalanceData(dateText, kindText, contentText, priceText,mainKey));
+						}
 					}} />
 				</View>
 				<Snackbar

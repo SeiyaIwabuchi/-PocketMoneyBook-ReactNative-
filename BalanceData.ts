@@ -1,7 +1,6 @@
 import React from 'react'
-import IBlanceData from './IBalanceData'
 
-class BalanceData implements IBlanceData{
+class BalanceData{
     date = "";
     kind = "out";
     content = "";
@@ -12,6 +11,8 @@ class BalanceData implements IBlanceData{
         if(id === undefined){
             this.id = BalanceData.count;
             BalanceData.count++;
+        }else{
+            this.id = id;
         }
         this.date = data;
         this.kind = kind;
