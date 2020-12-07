@@ -106,7 +106,7 @@ function calcBalance(
 								if (getWeekNumber(toDay, firstDayOfTheWeek) === getWeekNumber(new Date(`${new Date().getFullYear()}/${balanceData.date}`), firstDayOfTheWeek)) {
 									spendingThisWeek += price;
 								}
-								if (getAdjustedMonth(recDate, firstDateOfTheMonth) === getAdjustedMonth(toDay, firstDateOfTheMonth)) {
+								if (getAdjustedMonth(recDate, firstDateOfTheMonth) >= getAdjustedMonth(toDay, firstDateOfTheMonth)) {
 									spendingThisMonth += price;
 								}
 							}
