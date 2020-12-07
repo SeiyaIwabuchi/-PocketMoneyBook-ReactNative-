@@ -9,6 +9,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { NavigationScreenProp, NavigationState, NavigationParams } from "react-navigation";
 import AsyncStorage from '@react-native-community/async-storage';
 import Icons from 'react-native-vector-icons/MaterialIcons';
+import { validation, ValidationResult } from "../Validator";
 
 
 interface IProps {
@@ -25,6 +26,8 @@ export default function page2(props: IProps) {
 	const [balanceDataList, setBalanceDataList] = useState<BalanceData[]>([]);
 	const [mode,setMode] = useState<"add"|"edit">("add");
 	const [mainKey,setMainKey] = useState(-1);
+	const [snackbarText,setSnackbarText] = useState<string>();
+	const [valiResult,setValiResult] = useState<ValidationResult>();
 	useFocusEffect(
 		React.useCallback(() => {
 			AsyncStorage.getItem("currentItemId", (error,result) => { console.log(error);console.log(result) })
@@ -81,15 +84,31 @@ export default function page2(props: IProps) {
 					</Picker>
 					<Input placeholder={"事柄"} containerStyle={{ marginBottom: "10%" }} value={contentText} onChangeText={(event) => { setContentText(event) }} />
 					<Input placeholder={"金額"} containerStyle={{ marginBottom: "10%" }} value={priceText} onChangeText={(event) => { setPriceText(`${event}`) }} />
-					<Button title={"登録"} onPress={() => {
-						setVisible(true);
-						console.log(mode);
-						console.log(mainKey);
+					<Button title={"登録"} onPress={() => { //登録ボタン押下
+						setVisible(false);
+						let data:BalanceData;
+						let tValiResult:ValidationResult;
 						if(mode === "add"){
-							insertToDb(new BalanceData(dateText, kindText, contentText, priceText));
+							data = new BalanceData(dateText, kindText, contentText, priceText);
+							tValiResult = validation(data);
+							if (tValiResult.isResult){
+								insertToDb(data);
+								setSnackbarText("登録しました。");
+							}else{
+								setSnackbarText(tValiResult.errorText);
+							}
 						}else{
-							update(new BalanceData(dateText, kindText, contentText, priceText,mainKey));
+							data = new BalanceData(dateText, kindText, contentText, priceText,mainKey);
+							tValiResult = validation(data);
+							if(tValiResult.isResult){
+								update(data);
+								setSnackbarText("登録しました。");
+							}else{
+								setSnackbarText(tValiResult.errorText);
+							}
 						}
+						setValiResult(tValiResult);
+						setVisible(true);
 					}} />
 				</View>
 				<Snackbar
@@ -97,12 +116,16 @@ export default function page2(props: IProps) {
 					onDismiss={() => { setVisible(false) }}
 					action={{
 						label: "OK",
-						onPress: () => {
-							setVisible(false);
-							props.navigation.navigate("HOME");
+						onPress: ()=>{
+							if(valiResult?.isResult){
+								setVisible(false);
+								props.navigation.navigate("HOME");
+							}else{
+								setVisible(false);
+							}
 						}
 					}}
-				>{"登録しました。"}</Snackbar>
+				>{snackbarText}</Snackbar>
 			</View>
 		</View>
 	);

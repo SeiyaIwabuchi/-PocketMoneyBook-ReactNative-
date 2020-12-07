@@ -47,7 +47,7 @@ export default function App() {
 	return (
 		<View style={{ height: "99%" }}>
 			<NavigationContainer>
-				<Tab.Navigator initialRouteName={"SETTINGS"} screenOptions={
+				<Tab.Navigator initialRouteName={"HOME"} screenOptions={
 					({ route }) => ({
 						tabBarIcon: ({ focused, color, size }) => {
 							let iconName = "";
