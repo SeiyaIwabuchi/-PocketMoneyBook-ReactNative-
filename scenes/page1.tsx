@@ -156,7 +156,6 @@ export default function page1(props: IProps) {
             <Header
                 placement={"left"}
                 centerComponent={{ text: "お貧乏様", style: { fontSize: 25 } }}
-                containerStyle={{height:50}}
 			/>
             <View style={{ alignItems: "center", justifyContent: "center", height: "45%" }}>{/* 金額表示コンテナ */}
                 <View style={{ alignItems: "center", justifyContent: "center", height: "60%", width: "100%" }}>{/* 今日表示コンテナ */}
