@@ -48,13 +48,12 @@ export function deleteTable() {
 }
 
 export function select(setDataHandle: (t: BalanceData[]) => void, successCallBack: (list: BalanceData[]) => void, filter?: string) {
-	type model = typeof DatabaseConfig.models[0];
 	const db = SQLite.openDatabase(DatabaseConfig.databaseName);
 	let list: BalanceData[] = [];
 	console.log(`select * from ${DatabaseConfig.tableNames[0]} ${filter === undefined ? "" : `where ${filter}`}`);
 	db.transaction((tx) => {
 		tx.executeSql(
-			`select * from ${DatabaseConfig.tableNames[0]} ${filter === undefined ? "" : `where ${filter}`}`,
+			`select * from ${DatabaseConfig.tableNames[0]} ${filter === undefined ? "" : `where ${filter}`} order by date asc`,
 			undefined,
 			(_, { rows: SQLResultSetRowList }) => {
 				list.push(new BalanceData("日付", "種類", "事柄", "金額"));
@@ -154,4 +153,24 @@ export function update(data:BalanceData) {
 			}
 		);
 	});
+}
+
+export function getMaxId(successCallBack: (result:{maxId:number}) => void) {
+	const db = SQLite.openDatabase(DatabaseConfig.databaseName);
+	db.transaction((tx) => {
+		tx.executeSql(
+			`select max(id) as 'maxId' from ${DatabaseConfig.tableNames};`,
+			undefined,
+			(_, { rows: SQLResultSetRowList }) => {
+				successCallBack(SQLResultSetRowList.item(0));
+			}
+		);
+	},
+		(error) => {
+			console.log(error)
+		},
+		() => {
+			console.log("get success");
+		}
+	);
 }

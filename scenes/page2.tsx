@@ -1,14 +1,13 @@
 import React, { useState } from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import { Picker } from '@react-native-community/picker'
 import { Button, Header, Input } from "react-native-elements";
 import BalanceData from "../BalanceData";
 import { Snackbar } from 'react-native-paper';
-import { deleteById, insertToDb, select, update } from "../DatabaseOperation";
+import { deleteById, getMaxId, insertToDb, select, update } from "../DatabaseOperation";
 import { useFocusEffect } from '@react-navigation/native';
 import { NavigationScreenProp, NavigationState, NavigationParams } from "react-navigation";
 import AsyncStorage from '@react-native-community/async-storage';
-import Icons from 'react-native-vector-icons/MaterialIcons';
 import { validation, ValidationResult } from "../Validator";
 
 
@@ -23,11 +22,12 @@ export default function page2(props: IProps) {
 	const [priceText, setPriceText] = useState("");
 	const [visible, setVisible] = useState(false);
 	const [currentId, setCurrentId] = useState(-1);
-	const [balanceDataList, setBalanceDataList] = useState<BalanceData[]>([]);
+	const [, setBalanceDataList] = useState<BalanceData[]>([]);
 	const [mode,setMode] = useState<"add"|"edit">("add");
 	const [mainKey,setMainKey] = useState(-1);
 	const [snackbarText,setSnackbarText] = useState<string>();
 	const [valiResult,setValiResult] = useState<ValidationResult>();
+	const [maxId,setMaxId] = useState(-1);
 	useFocusEffect(
 		React.useCallback(() => {
 			AsyncStorage.getItem("currentItemId", (error,result) => { console.log(error);console.log(result) })
@@ -51,6 +51,9 @@ export default function page2(props: IProps) {
 						setKindText("支出");
 						setContentText("");
 						setPriceText("");
+						getMaxId((res)=>{
+							setMaxId(res.maxId);
+						});
 					}
 				});
 			AsyncStorage.removeItem("currentItemId");
@@ -74,7 +77,7 @@ export default function page2(props: IProps) {
 						height: "6%",
 					}}
 						selectedValue={kindText}
-						onValueChange={(item, index) => {
+						onValueChange={(item) => {
 							const tItem = item.toString();
 							if(tItem === "支出" || tItem === "収入") setKindText(tItem);
 						}}
@@ -89,7 +92,7 @@ export default function page2(props: IProps) {
 						let data:BalanceData;
 						let tValiResult:ValidationResult;
 						if(mode === "add"){
-							data = new BalanceData(dateText, kindText, contentText, priceText);
+							data = new BalanceData(dateText, kindText, contentText, priceText,maxId+1);
 							tValiResult = validation(data);
 							if (tValiResult.isResult){
 								insertToDb(data);

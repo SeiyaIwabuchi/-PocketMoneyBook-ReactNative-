@@ -1,14 +1,13 @@
-import { View, Text, FlatList, PixelRatio, Dimensions, Platform, ImageBackground } from "react-native";
-import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList } from "react-native";
+import React, { useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native' ;
-import { Avatar, Header, ListItem } from "react-native-elements";
+import { Header, ListItem } from "react-native-elements";
 import normalize from '../normalize';
-import * as SQLite from 'expo-sqlite';
 import BalanceData from '../BalanceData'
 import {select} from "../DatabaseOperation";
 import { NavigationParams, NavigationScreenProp, NavigationState } from "react-navigation";
 import AsyncStorage from '@react-native-community/async-storage';
-import Icons from 'react-native-vector-icons/MaterialIcons';
+import {Dimensions} from 'react-native';
 
 interface IProps {
     navigation: NavigationScreenProp<NavigationState, NavigationParams>;
@@ -59,7 +58,6 @@ function calcBalance(
 	let moneyAvailableToday = 0;
 	let moneyAvailableThisWeek = 0;
 	let spendingToday = 0;
-	let spendingThisWeek = 0;
 	let spendingThisMonth = 0;
 	AsyncStorage.getItem("firstDateOfTheMonth") //月始めの日付を取得
 		.then((day) => {
@@ -108,7 +106,6 @@ function calcBalance(
                                     getWeekNumber(toDay, firstDayOfTheWeek) === getWeekNumber(balanceDataDate, firstDayOfTheWeek) && 
                                     getAdjustedMonth(balanceDataDate,firstDateOfTheMonth) === getAdjustedMonth(new Date(),firstDateOfTheMonth)
                                     ) {
-									spendingThisWeek += price;
 								}
 								if (getAdjustedMonth(recDate, firstDateOfTheMonth) >= getAdjustedMonth(toDay, firstDateOfTheMonth)) {
 									spendingThisMonth += price;
@@ -139,10 +136,10 @@ export default function page1(props: IProps) {
             props.navigation.navigate("INPUT");
         }}>
             <ListItem.Content style={{ flexDirection: "row" }}>
-                <Text style={{ textAlign: "center", width: "25%", fontSize: normalize(20) }}>{item.date}</Text>
-                <Text style={{ textAlign: "center", width: "25%", fontSize: normalize(20) }}>{item.kind}</Text>
-                <Text style={{ textAlign: "center", width: "25%", fontSize: normalize(20) }}>{item.content}</Text>
-                <Text style={{ textAlign: "center", width: "25%", fontSize: normalize(20) }}>{"￥" + item.price}</Text>
+                <Text style={{ textAlign: "center", width: "25%", fontSize: normalize(25) }}>{item.date}</Text>
+                <Text style={{ textAlign: "center", width: "25%", fontSize: normalize(25) }}>{item.kind}</Text>
+                <Text style={{ textAlign: "center", width: "25%", fontSize: normalize(25) }}>{item.content}</Text>
+                <Text style={{ textAlign: "center", width: "25%", fontSize: normalize(25) }}>{"￥" + item.price}</Text>
             </ListItem.Content>
         </ListItem>
     );
@@ -155,18 +152,18 @@ export default function page1(props: IProps) {
         },[])
     );
     return (
-        <View style={{ height: "100%" }}>{/* ページコンテナ */}
+        <View style={{ height: Dimensions.get('window').height - 100  }}>{/* ページコンテナ */}
             <Header
 				leftComponent={{ icon: "menu" }}
 				centerComponent={{ text: "お貧乏様", style: { fontSize: 20 } }}
 			/>
             <View style={{ alignItems: "center", justifyContent: "center", height: "45%" }}>{/* 金額表示コンテナ */}
                 <View style={{ alignItems: "center", justifyContent: "center", height: "60%", width: "100%" }}>{/* 今日表示コンテナ */}
-                    <View style={{ alignItems: "center", justifyContent: "flex-end", height: "30%", width: "100%" }}>
+                    <View style={{ alignItems: "center", justifyContent: "center", height: "30%", width: "100%" }}>
                         <Text style={{ fontSize: normalize(40) }}>{"今日"}</Text>
                     </View>
-                    <View style={{ alignItems: "center", justifyContent: "center", height: "70%", width: "100%" }}>
-                        <Text style={{ fontSize: normalize(100) }}>{today}</Text>
+                    <View style={{ alignItems: "center", justifyContent: "center", height: "50%", width: "100%"}}>
+                        <Text style={{ fontSize: normalize(70,today.length),justifyContent: "center"}}>{today}</Text>
                     </View>
                 </View>
                 <View style={{ alignItems: "center", justifyContent: "center", height: "40%", width: "100%", flexDirection: "row" }}>{/*今月今週コンテナ */}
@@ -175,7 +172,7 @@ export default function page1(props: IProps) {
                             <Text style={{ fontSize: normalize(30) }}>{"今週"}</Text>
                         </View>
                         <View style={{ alignItems: "center", justifyContent: "center", width: "100%", height: "70%" }}>
-                            <Text style={{ fontSize: normalize(60) }}>{thisWeek}</Text>
+                            <Text style={{ fontSize: normalize(60,thisWeek.length) }}>{thisWeek}</Text>
                         </View>
                     </View>
                     <View style={{ alignItems: "center", justifyContent: "center", height: "100%", width: "50%" }}>{/* 今週コンテナ */}
@@ -183,12 +180,12 @@ export default function page1(props: IProps) {
                             <Text style={{ fontSize: normalize(30) }}>{"今月"}</Text>
                         </View>
                         <View style={{ alignItems: "center", justifyContent: "center", width: "100%", height: "70%" }}>
-                            <Text style={{ fontSize: normalize(60) }}>{thisMonth}</Text>
+                            <Text style={{ fontSize: normalize(60,thisMonth.length) }}>{thisMonth}</Text>
                         </View>
                     </View>
                 </View>
             </View>
-            <View style={{ alignItems: "center", justifyContent: "center", height: "55%" }}>{/* リストコンテナ */}
+            <View style={{ alignItems: "center", height: "55%" }}>{/* リストコンテナ */}
                 <FlatList keyExtractor={keyExtractor} data={balanceDataList} renderItem={renderItem} style={{ width: "100%" }} />
             </View>
         </View>
