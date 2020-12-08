@@ -56,7 +56,6 @@ export function select(setDataHandle: (t: BalanceData[]) => void, successCallBac
 			`select * from ${DatabaseConfig.tableNames[0]} ${filter === undefined ? "" : `where ${filter}`} order by date asc`,
 			undefined,
 			(_, { rows: SQLResultSetRowList }) => {
-				list.push(new BalanceData("日付", "種類", "事柄", "金額"));
 				for (let i = 0; i < SQLResultSetRowList.length; i++) {
 					list.push(SQLResultSetRowList.item(i));
 				}

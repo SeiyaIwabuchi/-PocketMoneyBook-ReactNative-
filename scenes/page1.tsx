@@ -143,7 +143,7 @@ export default function page1(props: IProps) {
             </ListItem.Content>
         </ListItem>
     );
-    const keyExtractor = (item: BalanceData, index: number) => index.toString()
+    const keyExtractor = (item: BalanceData, index: number) => index.toString();
     useFocusEffect(
         React.useCallback(()=>{
             select(setBalanceDataList,(list:BalanceData[])=>{
@@ -152,10 +152,11 @@ export default function page1(props: IProps) {
         },[])
     );
     return (
-        <View style={{ height: Dimensions.get('window').height - 100  }}>{/* ページコンテナ */}
+        <View style={{ height: Dimensions.get('window').height - 109  }}>{/* ページコンテナ */}
             <Header
-				leftComponent={{ icon: "menu" }}
-				centerComponent={{ text: "お貧乏様", style: { fontSize: 20 } }}
+                placement={"left"}
+                centerComponent={{ text: "お貧乏様", style: { fontSize: 25 } }}
+                containerStyle={{height:50}}
 			/>
             <View style={{ alignItems: "center", justifyContent: "center", height: "45%" }}>{/* 金額表示コンテナ */}
                 <View style={{ alignItems: "center", justifyContent: "center", height: "60%", width: "100%" }}>{/* 今日表示コンテナ */}
@@ -185,8 +186,15 @@ export default function page1(props: IProps) {
                     </View>
                 </View>
             </View>
-            <View style={{ alignItems: "center", height: "55%" }}>{/* リストコンテナ */}
-                <FlatList keyExtractor={keyExtractor} data={balanceDataList} renderItem={renderItem} style={{ width: "100%" }} />
+            <View style={{ alignItems: "flex-start", height: "55%" }}>{/* リストコンテナ */}
+                <FlatList 
+                keyExtractor={keyExtractor} 
+                data={balanceDataList} 
+                renderItem={renderItem} 
+                style={{ width: "100%" }} 
+                ListHeaderComponent={renderItem({item:new BalanceData("日付", "種類", "事柄", "金額")})}
+                stickyHeaderIndices={[0]}
+                />
             </View>
         </View>
     );

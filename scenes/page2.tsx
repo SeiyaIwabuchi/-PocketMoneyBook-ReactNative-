@@ -36,13 +36,13 @@ export default function page2(props: IProps) {
 						setMode("edit");
 						setCurrentId(parseInt(Id));
 						select(setBalanceDataList, (list) => {
-							if (list.length > 1) {
-								setMainKey(list[1].id);
-								setDateText(list[1].date);
-								if (list[1].kind === "支出" || list[1].kind === "収入") setKindText(list[1].kind);
-								setContentText(list[1].content);
-								setPriceText(list[1].price);
-								setCurrentId(list[1].id);
+							if (list.length > 0) {
+								setMainKey(list[0].id);
+								setDateText(list[0].date);
+								if (list[0].kind === "支出" || list[0].kind === "収入") setKindText(list[0].kind);
+								setContentText(list[0].content);
+								setPriceText(list[0].price);
+								setCurrentId(list[0].id);
 							}
 						}, `id=${Id}`);
 					}else{
@@ -62,8 +62,9 @@ export default function page2(props: IProps) {
 	return (
 		<View style={{width:"100%",height:"85%"}}>
 			<Header
-					leftComponent={{ icon: "menu" }}
-					centerComponent={{ text: "お貧乏様", style: { fontSize: 20 } }}
+					placement={"left"}
+					centerComponent={{ text: "お貧乏様", style: { fontSize: 25 } }}
+                	containerStyle={{height:50}}
 					rightComponent={{icon:"delete-forever",onPress:()=>{
 						deleteById(()=>{},`id=${currentId}`);
 						props.navigation.navigate("HOME");
@@ -97,6 +98,9 @@ export default function page2(props: IProps) {
 							if (tValiResult.isResult){
 								insertToDb(data);
 								setSnackbarText("登録しました。");
+								getMaxId((res)=>{
+									setMaxId(res.maxId);
+								});
 							}else{
 								setSnackbarText(tValiResult.errorText);
 							}
@@ -106,6 +110,9 @@ export default function page2(props: IProps) {
 							if(tValiResult.isResult){
 								update(data);
 								setSnackbarText("登録しました。");
+								getMaxId((res)=>{
+									setMaxId(res.maxId);
+								});
 							}else{
 								setSnackbarText(tValiResult.errorText);
 							}

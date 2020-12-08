@@ -29,8 +29,9 @@ export default function page3() {
 	return (
 		<View style={{ width: "100%", height: "85%" }}>
 			<Header
-				leftComponent={{ icon: "menu" }}
-				centerComponent={{ text: "お貧乏様", style: { fontSize: 20 } }}
+				placement={"left"}
+				centerComponent={{ text: "お貧乏様", style: { fontSize: 25 } }}
+				containerStyle={{height:50}}
 			/>
 			<View style={{ alignItems: "center", justifyContent: "center", height: "100%", padding: "1%" }}>
 				<View style={{ height: "100%", width: "100%", padding: "10%" }}>
