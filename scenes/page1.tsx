@@ -108,8 +108,6 @@ function calcBalance(
                                     getWeekNumber(toDay, firstDayOfTheWeek) === getWeekNumber(balanceDataDate, firstDayOfTheWeek) && 
                                     getAdjustedMonth(balanceDataDate,firstDateOfTheMonth) === getAdjustedMonth(new Date(),firstDateOfTheMonth)
                                     ) {
-                                    console.log(balanceDataDate);
-                                    console.log(new Date(new Date().getFullYear(),getAdjustedMonth(balanceDataDate,firstDateOfTheMonth)+1,firstDateOfTheMonth));
 									spendingThisWeek += price;
 								}
 								if (getAdjustedMonth(recDate, firstDateOfTheMonth) >= getAdjustedMonth(toDay, firstDateOfTheMonth)) {
