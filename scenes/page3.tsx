@@ -31,7 +31,7 @@ export default function page3() {
 			<Header
 				placement={"left"}
 				centerComponent={{ text: "お貧乏様", style: { fontSize: 25 } }}
-				containerStyle={{height:50}}
+				containerStyle={{shadowOpacity:1,shadowRadius:0,shadowOffset:{width:0,height:1},shadowColor:"#ccc",elevation:2}}
 			/>
 			<View style={{ alignItems: "center", justifyContent: "center", height: "100%", padding: "1%" }}>
 				<View style={{ height: "100%", width: "100%", padding: "10%" }}>

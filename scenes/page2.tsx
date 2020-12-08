@@ -64,7 +64,7 @@ export default function page2(props: IProps) {
 			<Header
 					placement={"left"}
 					centerComponent={{ text: "お貧乏様", style: { fontSize: 25 } }}
-                	containerStyle={{height:50}}
+                	containerStyle={{shadowOpacity:1,shadowRadius:0,shadowOffset:{width:0,height:1},shadowColor:"#ccc",elevation:2}}
 					rightComponent={{icon:"delete-forever",onPress:()=>{
 						deleteById(()=>{},`id=${currentId}`);
 						props.navigation.navigate("HOME");
