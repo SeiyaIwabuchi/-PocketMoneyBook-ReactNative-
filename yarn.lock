@@ -1269,14 +1269,14 @@
     "wcwidth" "^1.0.1"
 
 "@react-native-community/picker@^1.6.6":
-  "integrity" "sha512-R2QUEcpdOClgvCsTUzfJcb/qcRy40ikHoJslvnRRj2iP8zCaB1k/3XK3JKCo3e+Alux1fR5o7edlDOIOtwx1YQ=="
-  "resolved" "https://registry.npmjs.org/@react-native-community/picker/-/picker-1.6.6.tgz"
-  "version" "1.6.6"
+  "integrity" "sha512-aS506wjynNzKDZjynlDasbc665GKGHdhrCob9KdOprPFlE+zMnoR3k0Ce0OkIuGHcY/GMVvQqTc+LYVm2UOmbg=="
+  "resolved" "https://registry.npmjs.org/@react-native-community/picker/-/picker-1.8.0.tgz"
+  "version" "1.8.0"
 
 "@react-native-picker/picker@^1.9.3":
-  "integrity" "sha512-8wNd1Cold2mciTq5Djo4c+FU1x4+weqmR8WAFWOJ1yfkh0sOiAa/9SdFbHZK2fWZCK+W08iLqWWi5KGQDaqlWw=="
-  "resolved" "https://registry.npmjs.org/@react-native-picker/picker/-/picker-1.9.3.tgz"
-  "version" "1.9.3"
+  "integrity" "sha512-71sNPRZf/PeMKpLMuzKHLT4p4zRilWnfv61nko9HMZtjW0R0DNy2zLy6PYokTbtbUqhwCdeEIldQcjFSoNR8rg=="
+  "resolved" "https://registry.npmjs.org/@react-native-picker/picker/-/picker-1.9.4.tgz"
+  "version" "1.9.4"
 
 "@react-navigation/bottom-tabs@^5.11.2":
   "integrity" "sha512-7+hH00N9Ze74VcX8uYWVyXFXZ0Fwid+lG+SSLtmnJjk1Y6oIQpQ17EPqKO0UZlKKjhsvMlAnL5fdgFtoqnSjcA=="
@@ -2641,6 +2641,14 @@
     "fbjs" "1.0.0"
     "uuid" "^3.3.2"
 
+"expo-constants@~9.3.0":
+  "integrity" "sha512-QDjM4rbUiBCpWb4XJvkZHJnrrm40EcHBj3ZRhc/IcZVFt+BlsSHIg3YlZ0ncjikYswVGEY85kcJy1Kq1g6ib3w=="
+  "resolved" "https://registry.npmjs.org/expo-constants/-/expo-constants-9.3.3.tgz"
+  "version" "9.3.3"
+  dependencies:
+    "fbjs" "1.0.0"
+    "uuid" "^3.3.2"
+
 "expo-error-recovery@~1.3.0":
   "integrity" "sha512-iffxU1iiMjMZ84y7GPt3ScrFrESLB1gnH9s5/1HuDySch+y5NEgIY14yMR4Mp1iSebCM9Bp4f9dM7gV6AShafg=="
   "resolved" "https://registry.yarnpkg.com/expo-error-recovery/-/expo-error-recovery-1.3.0.tgz"
@@ -2674,11 +2682,11 @@
   "version" "8.3.1"
 
 "expo-linking@~1.0.4":
-  "integrity" "sha512-LH26/ilFU0rCdsO1SJbNqoii3jTBqHdEfSloXhEb73aKdQT2BG6z5IjFIQXV2RiCmxNJbotdbfXyWSPqPoCEwg=="
-  "resolved" "https://registry.yarnpkg.com/expo-linking/-/expo-linking-1.0.5.tgz"
-  "version" "1.0.5"
+  "integrity" "sha512-j1It+b4lFPq3JoJGebyinPadP6DiVRZu2BkJzClx3n81SCjaHD1Kf1lOgu7nb9RbZ9wdT5CiODMezir13LNg/g=="
+  "resolved" "https://registry.npmjs.org/expo-linking/-/expo-linking-1.0.6.tgz"
+  "version" "1.0.6"
   dependencies:
-    "expo-constants" "~9.2.0"
+    "expo-constants" "~9.3.0"
     "qs" "^6.5.0"
     "url-parse" "^1.4.4"
 

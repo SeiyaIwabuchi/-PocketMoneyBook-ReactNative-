@@ -102,8 +102,14 @@ function calcBalance(
 							else {
 								if (new Date(`${new Date().getFullYear()}/${balanceData.date}`).getTime() === toDay.getTime()) {
 									spendingToday += price;
-								}
-								if (getWeekNumber(toDay, firstDayOfTheWeek) === getWeekNumber(new Date(`${new Date().getFullYear()}/${balanceData.date}`), firstDayOfTheWeek)) {
+                                }
+                                const balanceDataDate = new Date(`${new Date().getFullYear()}/${balanceData.date}`);
+								if (
+                                    getWeekNumber(toDay, firstDayOfTheWeek) === getWeekNumber(balanceDataDate, firstDayOfTheWeek) && 
+                                    getAdjustedMonth(balanceDataDate,firstDateOfTheMonth) === getAdjustedMonth(new Date(),firstDateOfTheMonth)
+                                    ) {
+                                    console.log(balanceDataDate);
+                                    console.log(new Date(new Date().getFullYear(),getAdjustedMonth(balanceDataDate,firstDateOfTheMonth)+1,firstDateOfTheMonth));
 									spendingThisWeek += price;
 								}
 								if (getAdjustedMonth(recDate, firstDateOfTheMonth) >= getAdjustedMonth(toDay, firstDateOfTheMonth)) {
@@ -114,10 +120,10 @@ function calcBalance(
 					});
 					let moneyAvailableThisMonth = balance;
 					setThisMonthSetter(`￥${moneyAvailableThisMonth - spendingThisMonth}`);
-					moneyAvailableToday = Math.floor((moneyAvailableThisMonth - (spendingThisMonth - spendingThisWeek)) / daysLeftThisMonth);
-					moneyAvailableThisWeek = Math.floor(moneyAvailableToday * (7 > daysLeftThisWeek ? daysLeftThisWeek : 7));
+					moneyAvailableToday = Math.floor((moneyAvailableThisMonth - spendingThisMonth + spendingToday) / daysLeftThisMonth);
+					moneyAvailableThisWeek = Math.floor(moneyAvailableToday * daysLeftThisWeek);
 					setToday(`￥${moneyAvailableToday - spendingToday}`);
-					setThisWeek(`￥${moneyAvailableThisWeek - spendingThisWeek}`);
+					setThisWeek(`￥${moneyAvailableThisWeek  - spendingToday}`);
 
 				});
 		});
