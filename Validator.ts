@@ -22,7 +22,7 @@ export function validation(data:BalanceData){
         isValid = false;
     }
     let tDate = data.date.split("/");
-    if(isNaN(parseInt(tDate[0])) || isNaN(parseInt(tDate[1])) || 1 > parseInt(tDate[0]) || parseInt(tDate[1]) > 12){
+    if(isNaN(parseInt(tDate[0])) || isNaN(parseInt(tDate[1])) || 1 > parseInt(tDate[0]) || parseInt(tDate[0]) > 12 || 1 > parseInt(tDate[1]) || parseInt(tDate[1]) > 31){
         errorText += "日付が不正です。\n";
         isValid = false;
     }
