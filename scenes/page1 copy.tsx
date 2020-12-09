@@ -152,27 +152,41 @@ export default function page1(props: IProps) {
         },[])
     );
     return (
-        <View style={{ height: Dimensions.get('window').height - 109, flexDirection:"column"}}>{/* ページコンテナ */}
+        <View style={{ height: Dimensions.get('window').height - 109  }}>{/* ページコンテナ */}
             <Header
                 placement={"left"}
                 centerComponent={{ text: "お貧乏様", style: { fontSize: 25 } }}
                 containerStyle={{shadowOpacity:1,shadowRadius:0,shadowOffset:{width:0,height:1},shadowColor:"#ccc",elevation:2}}
 			/>
-            <View style={{borderWidth:1,flexDirection:"column",justifyContent:"space-around",margin:10}}>{/* 金額表示コンテナ */}
-                <View style={{justifyContent:"center",alignItems:"flex-start",borderWidth:1}}>
-                    <Text style={{borderWidth:1,fontSize:normalize(20)}}>今日金額表示領域(ダミー金額)</Text>
-                    <Text style={{fontSize:normalize(50)}}>{today}</Text>
+            <View style={{ alignItems: "center", justifyContent: "center", height: "45%" }}>{/* 金額表示コンテナ */}
+                <View style={{ alignItems: "center", justifyContent: "center", height: "60%", width: "100%" }}>{/* 今日表示コンテナ */}
+                    <View style={{ alignItems: "center", justifyContent: "center", height: "30%", width: "100%" }}>
+                        <Text style={{ fontSize: normalize(40) }}>{"今日"}</Text>
+                    </View>
+                    <View style={{ alignItems: "center", justifyContent: "center", height: "50%", width: "100%"}}>
+                        <Text style={{ fontSize: normalize(70,today.length),justifyContent: "center"}}>{today}</Text>
+                    </View>
                 </View>
-                <View style={{alignItems:"flex-start",borderWidth:1}}>
-                    <Text style={{borderWidth:1,fontSize:normalize(18)}}>今週金額表示領域(ダミー金額)</Text>
-                    <Text style={{fontSize:normalize(40)}}>{thisWeek}</Text>
-                </View>
-                <View style={{alignItems:"flex-start",borderWidth:1}}>
-                    <Text style={{borderWidth:1,fontSize:normalize(18)}}>今月金額表示領域(ダミー金額)</Text>
-                    <Text style={{fontSize:normalize(40)}}>{thisMonth}</Text>
+                <View style={{ alignItems: "center", justifyContent: "center", height: "40%", width: "100%", flexDirection: "row" }}>{/*今月今週コンテナ */}
+                    <View style={{ alignItems: "center", justifyContent: "center", height: "100%", width: "50%" }}>{/* 今週コンテナ */}
+                        <View style={{ alignItems: "center", justifyContent: "center", width: "100%", height: "30%" }}>
+                            <Text style={{ fontSize: normalize(30) }}>{"今週"}</Text>
+                        </View>
+                        <View style={{ alignItems: "center", justifyContent: "center", width: "100%", height: "70%" }}>
+                            <Text style={{ fontSize: normalize(60,thisWeek.length) }}>{thisWeek}</Text>
+                        </View>
+                    </View>
+                    <View style={{ alignItems: "center", justifyContent: "center", height: "100%", width: "50%" }}>{/* 今週コンテナ */}
+                        <View style={{ alignItems: "center", justifyContent: "center", width: "100%", height: "30%" }}>
+                            <Text style={{ fontSize: normalize(30) }}>{"今月"}</Text>
+                        </View>
+                        <View style={{ alignItems: "center", justifyContent: "center", width: "100%", height: "70%" }}>
+                            <Text style={{ fontSize: normalize(60,thisMonth.length) }}>{thisMonth}</Text>
+                        </View>
+                    </View>
                 </View>
             </View>
-            <View style={{ alignItems: "flex-start"}}>{/* リストコンテナ */}
+            <View style={{ alignItems: "flex-start", height: "55%" }}>{/* リストコンテナ */}
                 <FlatList 
                 keyExtractor={keyExtractor} 
                 data={balanceDataList} 
