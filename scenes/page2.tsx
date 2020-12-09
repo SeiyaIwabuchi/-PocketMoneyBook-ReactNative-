@@ -9,6 +9,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { NavigationScreenProp, NavigationState, NavigationParams } from "react-navigation";
 import AsyncStorage from '@react-native-community/async-storage';
 import { validation, ValidationResult } from "../Validator";
+import DatePicker from 'react-native-datepicker';
 
 
 interface IProps {
@@ -17,6 +18,7 @@ interface IProps {
 
 export default function page2(props: IProps) {
 	const [dateText, setDateText] = useState(`${new Date().getMonth()+1}/${new Date().getDate()}`);
+	const [date,setDate] = useState(new Date());
 	const [kindText, setKindText] = useState<"収入"|"支出">("支出");
 	const [contentText, setContentText] = useState("");
 	const [priceText, setPriceText] = useState("");
@@ -72,7 +74,21 @@ export default function page2(props: IProps) {
 				/>
 			<View style={{ alignItems: "center", justifyContent: "center", height: "100%", padding: "1%" }}>
 				<View style={{ height: "100%", width: "100%", padding: "10%" }}>
-					<Input placeholder={"日付"} containerStyle={{ marginBottom: "10%" }} value={dateText} onChangeText={(event) => { setDateText(event) }} onKeyPress={()=>{console.log("ここここここ")}}/>
+					<DatePicker 
+						style={{ marginBottom: "10%",width:"97%" ,marginLeft:"3%"}} 
+						mode="date"
+						date={date}
+						format="YYYY/MM/DD"
+						confirmBtnText="Confirm"
+						cancelBtnText="Cancel"
+						onDateChange={(tdate)=>{setDate(new Date(tdate))}}
+						customStyles={
+							{
+								dateInput:{alignItems:"flex-start"},
+								dateText:{paddingLeft:"3%"}
+							}
+						}
+					/>
 					<Picker style={{
 						marginBottom: "10%",
 						height: "6%",
