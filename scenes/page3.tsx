@@ -7,7 +7,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 
 export default function page3() {
 	const [firstDateOfTheMonth, setFirstDateOfTheMonth] = useState(0);
-	const [firstDayOfTheWeek, setFirstDayOfTheWeek] = useState(0);
+	const [firstDayOfTheWeek, setFirstDayOfTheWeek] = useState(-1);
 	const date = new Date();
 	const lastDateOfTheMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
 	useFocusEffect(
@@ -46,7 +46,7 @@ export default function page3() {
 								AsyncStorage.setItem("firstDateOfTheMonth", `${item}`);
 							}}
 						>
-							<Picker.Item label={"月初めの日"} value={"0"} />
+							<Picker.Item label={"月初めの日"} value={0} />
 							{(() => {
 								let list = [];
 								for (let i = 1; i <= lastDateOfTheMonth; i++) {

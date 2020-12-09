@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View,Text } from 'react-native';
+import { View } from 'react-native';
 import Pages1 from './scenes/page1';
 import Pages2 from './scenes/page2';
 import Pages3 from './scenes/page3';
@@ -7,8 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native';
 import Icons from 'react-native-vector-icons/MaterialIcons';
 import {createTable} from './DatabaseOperation';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import page1 from './scenes/page1';
+  
 
 function initDB(){
 	//deleteTable(); //テーブル削除
@@ -43,7 +42,6 @@ export default function App() {
 	useEffect(()=>{
 		initDB();
 	},[]);
-	const drawer = createDrawerNavigator();
 	return (
 		<View style={{ height: "99%" }}>
 			<NavigationContainer>
