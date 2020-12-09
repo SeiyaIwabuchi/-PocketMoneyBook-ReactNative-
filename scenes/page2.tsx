@@ -72,7 +72,7 @@ export default function page2(props: IProps) {
 				/>
 			<View style={{ alignItems: "center", justifyContent: "center", height: "100%", padding: "1%" }}>
 				<View style={{ height: "100%", width: "100%", padding: "10%" }}>
-					<Input placeholder={"日付"} containerStyle={{ marginBottom: "10%" }} value={dateText} onChangeText={(event) => { setDateText(event) }} />
+					<Input placeholder={"日付"} containerStyle={{ marginBottom: "10%" }} value={dateText} onChangeText={(event) => { setDateText(event) }} onKeyPress={()=>{console.log("ここここここ")}}/>
 					<Picker style={{
 						marginBottom: "10%",
 						height: "6%",
