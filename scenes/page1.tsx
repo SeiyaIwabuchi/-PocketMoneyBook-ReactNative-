@@ -160,15 +160,15 @@ export default function page1(props: IProps) {
 			/>
             <View style={{borderWidth:1,flexDirection:"column",justifyContent:"space-around",margin:10}}>{/* 金額表示コンテナ */}
                 <View style={{justifyContent:"center",alignItems:"flex-start",borderWidth:1}}>
-                    <Text style={{borderWidth:1,fontSize:normalize(20)}}>今日金額表示領域(ダミー金額)</Text>
+                    <Text style={{borderWidth:1,fontSize:normalize(20)}}>今日使える金額</Text>
                     <Text style={{fontSize:normalize(50)}}>{today}</Text>
                 </View>
                 <View style={{alignItems:"flex-start",borderWidth:1}}>
-                    <Text style={{borderWidth:1,fontSize:normalize(18)}}>今週金額表示領域(ダミー金額)</Text>
+                    <Text style={{borderWidth:1,fontSize:normalize(18)}}>今週使える金額</Text>
                     <Text style={{fontSize:normalize(40)}}>{thisWeek}</Text>
                 </View>
                 <View style={{alignItems:"flex-start",borderWidth:1}}>
-                    <Text style={{borderWidth:1,fontSize:normalize(18)}}>今月金額表示領域(ダミー金額)</Text>
+                    <Text style={{borderWidth:1,fontSize:normalize(18)}}>今月使える金額</Text>
                     <Text style={{fontSize:normalize(40)}}>{thisMonth}</Text>
                 </View>
             </View>
