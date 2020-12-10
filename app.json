@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Obinbo",
-    "slug": "obinbo",
+    "name": "ScreenTransition",
+    "slug": "ScreenTransition",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

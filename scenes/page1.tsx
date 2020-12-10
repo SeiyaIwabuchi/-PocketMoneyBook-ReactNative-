@@ -8,9 +8,26 @@ import {select} from "../DatabaseOperation";
 import { NavigationParams, NavigationScreenProp, NavigationState } from "react-navigation";
 import AsyncStorage from '@react-native-community/async-storage';
 import {Dimensions} from 'react-native';
+import * as Animatable from 'react-native-animatable';
 
 interface IProps {
     navigation: NavigationScreenProp<NavigationState, NavigationParams>;
+}
+
+function getColorAmount(available:number,income:number){
+    let r = Math.floor(186 + ((1 - (income/available)) * 69));
+    r = isNaN(r)?186:r;
+    r = r > 255?255:r;
+    let sr = r < 16?"0" + r.toString(16):r.toString(16);
+    let g = Math.floor(186 + ((income/available)*48));
+    g = isNaN(g)?234:g;
+    g = g < 186?186:g;
+    let sg = g < 16?"0" + g.toString(16):g.toString(16);
+    let b = Math.floor(186 + ((income/available)*69));
+    b = isNaN(b)?255:b;
+    b = b < 186?186:b;
+    let sb = b < 16?"0" + b.toString(16):b.toString(16);
+    return `#${sr}${sg}${sb}`
 }
 
 function getAdjustedMonth(d:Date,firstDateOfTheMonth:number){
@@ -45,9 +62,12 @@ function weeklyAdjustment(firstDayOfTheWeek:number){
 
 function calcBalance(
 	balanceDataList: BalanceData[],
-	setThisMonthSetter: (text: string) => void,
-	setThisWeek: (text: string) => void,
-	setToday: (text: string) => void
+	setThisMonthSetter: (price:number) => void,
+	setThisWeek: (price:number) => void,
+    setToday: (price:number) => void,
+    setThisMonthAvailable:(price:number)=>void,
+    setThisWeekAvailable:(price:number)=>void,
+    setTodayAvailable:(price:number)=>void
 ) {
 	let balance = 0;
 	let toDay = new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate());
@@ -114,12 +134,14 @@ function calcBalance(
 						}
 					});
 					let moneyAvailableThisMonth = balance;
-					setThisMonthSetter(`￥${moneyAvailableThisMonth - spendingThisMonth}`);
+					setThisMonthSetter(moneyAvailableThisMonth - spendingThisMonth);
 					moneyAvailableToday = Math.floor((moneyAvailableThisMonth - spendingThisMonth + spendingToday) / daysLeftThisMonth);
 					moneyAvailableThisWeek = Math.floor(moneyAvailableToday * daysLeftThisWeek);
-					setToday(`￥${moneyAvailableToday - spendingToday}`);
-					setThisWeek(`￥${moneyAvailableThisWeek  - spendingToday}`);
-
+					setToday(moneyAvailableToday - spendingToday);
+                    setThisWeek(moneyAvailableThisWeek  - spendingToday);
+                    setThisMonthAvailable(moneyAvailableThisMonth);
+                    setThisWeekAvailable(moneyAvailableThisWeek);
+                    setTodayAvailable(moneyAvailableToday);
 				});
 		});
 
@@ -127,9 +149,15 @@ function calcBalance(
 
 export default function page1(props: IProps) {
     const [balanceDataList,setBalanceDataList] = useState<BalanceData[]>([]);
-    const [thisMonth,setThisMonth] = useState("￥0");
-    const [thisWeek,setThisWeek] = useState("￥0");
-    const [today,setThisToday] = useState("￥0");
+    const [thisMonth,setThisMonth] = useState(0);
+    const [thisWeek,setThisWeek] = useState(0);
+    const [today,setThisToday] = useState(0);
+    const [monthAvailable,setMonthAvailable] = useState(0);
+    const [weekAvailabale,setWeekAvailabale] = useState(0);
+    const [todayAvailable,setTodayAvailable] = useState(0);
+    const [todayColor,setTodayColor] = useState("");
+    const [weekColor,setWeekColor] = useState("");
+    const [monthColor,setMonthColor] = useState("");
     const renderItem = ({ item }: { item: BalanceData }) => (
         <ListItem bottomDivider onPress={()=>{
             AsyncStorage.setItem("currentItemId",item.id.toString(),(error)=>{console.log(error)});
@@ -147,7 +175,7 @@ export default function page1(props: IProps) {
     useFocusEffect(
         React.useCallback(()=>{
             select(setBalanceDataList,(list:BalanceData[])=>{
-                calcBalance(list,setThisMonth,setThisWeek,setThisToday);
+                calcBalance(list,setThisMonth,setThisWeek,setThisToday,setMonthAvailable,setWeekAvailabale,setTodayAvailable);
             });
         },[])
     );
@@ -158,18 +186,24 @@ export default function page1(props: IProps) {
                 centerComponent={{ text: "お貧乏様", style: { fontSize: 25 } }}
 			/>
             <View style={{flexDirection:"column",justifyContent:"space-around"}}>{/* 金額表示コンテナ */}
-                <View style={{alignItems:"flex-start",borderWidth:1,margin:"2%",backgroundColor:"#dbdbdb",borderColor:"#a3a3a3",borderRadius:20}}>
-                    <Text style={{borderWidth:0,fontSize:normalize(20),marginLeft:"3%",marginTop:"2%"}}>今日使える金額</Text>
-                    <Text style={{borderWidth:0,fontSize:normalize(50),marginLeft:"3%"}}>{today}</Text>
-                </View>
-                <View style={{alignItems:"flex-start",borderWidth:1,margin:"2%",backgroundColor:"#dbdbdb",borderColor:"#a3a3a3",borderRadius:20}}>
+                <Animatable.View animation="fadeInRight" delay={0} ref={(ref)=>{}}>
+                    <View style={{alignItems:"flex-start",borderWidth:1,margin:"2%",backgroundColor:getColorAmount(todayAvailable,today),borderColor:"#a3a3a3",borderRadius:20}}>
+                        <Text style={{borderWidth:0,fontSize:normalize(20),marginLeft:"3%",marginTop:"2%"}}>今日使える金額</Text>
+                        <Text style={{borderWidth:0,fontSize:normalize(50),marginLeft:"3%"}}>{`￥${today}`}</Text>
+                    </View>
+                </Animatable.View>
+                <Animatable.View animation="fadeInRight" delay={100}>
+                <View style={{alignItems:"flex-start",borderWidth:1,margin:"2%",backgroundColor:getColorAmount(weekAvailabale,thisWeek),borderColor:"#a3a3a3",borderRadius:20}}>
                     <Text style={{borderWidth:0,fontSize:normalize(18),marginLeft:"3%",marginTop:"2%"}}>今週使える金額</Text>
-                    <Text style={{fontSize:normalize(40),marginLeft:"3%"}}>{thisWeek}</Text>
+                    <Text style={{fontSize:normalize(40),marginLeft:"3%"}}>{`￥${thisWeek}`}</Text>
                 </View>
-                <View style={{alignItems:"flex-start",borderWidth:1,margin:"2%",backgroundColor:"#dbdbdb",borderColor:"#a3a3a3",borderRadius:20}}>
+                </Animatable.View>
+                <Animatable.View animation="fadeInRight" delay={200}>
+                <View style={{alignItems:"flex-start",borderWidth:1,margin:"2%",backgroundColor:getColorAmount(monthAvailable,thisMonth),borderColor:"#a3a3a3",borderRadius:20}}>
                     <Text style={{borderWidth:0,fontSize:normalize(18),marginLeft:"3%",marginTop:"2%"}}>今月使える金額</Text>
-                    <Text style={{fontSize:normalize(40),marginLeft:"3%"}}>{thisMonth}</Text>
+                    <Text style={{fontSize:normalize(40),marginLeft:"3%"}}>{`￥${thisMonth}`}</Text>
                 </View>
+                </Animatable.View>
             </View>
             <View style={{ alignItems: "flex-start"}}>{/* リストコンテナ */}
                 <FlatList 
