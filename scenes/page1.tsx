@@ -156,20 +156,19 @@ export default function page1(props: IProps) {
             <Header
                 placement={"left"}
                 centerComponent={{ text: "お貧乏様", style: { fontSize: 25 } }}
-                containerStyle={{shadowOpacity:1,shadowRadius:0,shadowOffset:{width:0,height:1},shadowColor:"#ccc",elevation:2}}
 			/>
-            <View style={{borderWidth:1,flexDirection:"column",justifyContent:"space-around",margin:10}}>{/* 金額表示コンテナ */}
-                <View style={{justifyContent:"center",alignItems:"flex-start",borderWidth:1}}>
-                    <Text style={{borderWidth:1,fontSize:normalize(20)}}>今日使える金額</Text>
-                    <Text style={{fontSize:normalize(50)}}>{today}</Text>
+            <View style={{flexDirection:"column",justifyContent:"space-around"}}>{/* 金額表示コンテナ */}
+                <View style={{alignItems:"flex-start",borderWidth:1,margin:"2%",backgroundColor:"#dbdbdb",borderColor:"#a3a3a3",borderRadius:20}}>
+                    <Text style={{borderWidth:0,fontSize:normalize(20),marginLeft:"3%",marginTop:"2%"}}>今日使える金額</Text>
+                    <Text style={{borderWidth:0,fontSize:normalize(50),marginLeft:"3%"}}>{today}</Text>
                 </View>
-                <View style={{alignItems:"flex-start",borderWidth:1}}>
-                    <Text style={{borderWidth:1,fontSize:normalize(18)}}>今週使える金額</Text>
-                    <Text style={{fontSize:normalize(40)}}>{thisWeek}</Text>
+                <View style={{alignItems:"flex-start",borderWidth:1,margin:"2%",backgroundColor:"#dbdbdb",borderColor:"#a3a3a3",borderRadius:20}}>
+                    <Text style={{borderWidth:0,fontSize:normalize(18),marginLeft:"3%",marginTop:"2%"}}>今週使える金額</Text>
+                    <Text style={{fontSize:normalize(40),marginLeft:"3%"}}>{thisWeek}</Text>
                 </View>
-                <View style={{alignItems:"flex-start",borderWidth:1}}>
-                    <Text style={{borderWidth:1,fontSize:normalize(18)}}>今月使える金額</Text>
-                    <Text style={{fontSize:normalize(40)}}>{thisMonth}</Text>
+                <View style={{alignItems:"flex-start",borderWidth:1,margin:"2%",backgroundColor:"#dbdbdb",borderColor:"#a3a3a3",borderRadius:20}}>
+                    <Text style={{borderWidth:0,fontSize:normalize(18),marginLeft:"3%",marginTop:"2%"}}>今月使える金額</Text>
+                    <Text style={{fontSize:normalize(40),marginLeft:"3%"}}>{thisMonth}</Text>
                 </View>
             </View>
             <View style={{ alignItems: "flex-start"}}>{/* リストコンテナ */}
