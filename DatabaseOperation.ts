@@ -2,9 +2,11 @@ import React from 'react';
 import * as SQLite from 'expo-sqlite';
 import DatabaseConfig from './DatabaseConfig';
 import BalanceData from './BalanceData';
+import { FileSystem } from 'expo';
 
 export function createTable() {
 	const db = SQLite.openDatabase(DatabaseConfig.databaseName);
+	console.log(FileSystem.documentDirectory + 'SQLite/');
 	db.transaction((tx) => {
 		tx.executeSql(
 			"create table if not exists " + DatabaseConfig.tableNames[0] + "(" +
