@@ -40,6 +40,7 @@ export default function App() {
 		tabList.push(<Tab.Screen name={pageicon.pageName} component={pageicon.component}/>);
 	});
 	useEffect(()=>{
+		console.log("ようこそ！");
 		initDB();
 	},[]);
 	return (

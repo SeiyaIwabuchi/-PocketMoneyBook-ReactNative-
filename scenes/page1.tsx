@@ -9,6 +9,7 @@ import { NavigationParams, NavigationScreenProp, NavigationState } from "react-n
 import AsyncStorage from '@react-native-community/async-storage';
 import {Dimensions} from 'react-native';
 import * as Animatable from 'react-native-animatable';
+import * as Progress from 'react-native-progress';
 
 interface IProps {
     navigation: NavigationScreenProp<NavigationState, NavigationParams>;
@@ -193,20 +194,29 @@ export default function page1(props: IProps) {
             <View style={{flexDirection:"column",justifyContent:"space-around"}}>{/* 金額表示コンテナ */}
                 <Animatable.View animation="fadeInRight" delay={0} ref={(ref)=>{}}>
                     <View style={{alignItems:"flex-start",borderWidth:1,margin:"2%",backgroundColor:getColorAmount(todayAvailable,today),borderColor:"#a3a3a3",borderRadius:20}}>
-                        <Text style={{borderWidth:0,fontSize:normalize(20),marginLeft:"3%",marginTop:"2%"}}>今日使える金額</Text>
-                        <Text style={{borderWidth:0,fontSize:normalize(50),marginLeft:"3%"}}>{`￥${today}`}</Text>
+                        <View style={{width:"100%",flexDirection:"row",justifyContent:"space-between"}}>
+                            <Text style={{borderWidth:0,fontSize:normalize(20),marginLeft:"3%",marginTop:"2%"}}>今日使える金額</Text>
+                            <Progress.Bar progress={todayAvailable===0?0:(today/todayAvailable)} width={180} height={20} style={{alignSelf:"center",marginRight:"5%"}}/>
+                        </View>
+                            <Text style={{borderWidth:0,fontSize:normalize(50),marginLeft:"3%"}}>{`￥${today}`}</Text>
                     </View>
                 </Animatable.View>
                 <Animatable.View animation="fadeInRight" delay={100}>
                 <View style={{alignItems:"flex-start",borderWidth:1,margin:"2%",backgroundColor:getColorAmount(weekAvailabale,thisWeek),borderColor:"#a3a3a3",borderRadius:20}}>
-                    <Text style={{borderWidth:0,fontSize:normalize(18),marginLeft:"3%",marginTop:"2%"}}>今週使える金額</Text>
-                    <Text style={{fontSize:normalize(40),marginLeft:"3%"}}>{`￥${thisWeek}`}</Text>
+                    <View style={{width:"100%",flexDirection:"row",justifyContent:"space-between"}}>
+                        <Text style={{borderWidth:0,fontSize:normalize(18),marginLeft:"3%",marginTop:"2%"}}>今週使える金額</Text>
+                        <Progress.Bar progress={weekAvailabale===0?0:(thisWeek/weekAvailabale)} width={180} height={20} style={{alignSelf:"center",marginRight:"5%"}}/>
+                    </View>
+                        <Text style={{fontSize:normalize(40),marginLeft:"3%"}}>{`￥${thisWeek}`}</Text>
                 </View>
                 </Animatable.View>
                 <Animatable.View animation="fadeInRight" delay={200}>
                 <View style={{alignItems:"flex-start",borderWidth:1,margin:"2%",backgroundColor:getColorAmount(monthAvailable,thisMonth),borderColor:"#a3a3a3",borderRadius:20}}>
-                    <Text style={{borderWidth:0,fontSize:normalize(18),marginLeft:"3%",marginTop:"2%"}}>今月使える金額</Text>
-                    <Text style={{fontSize:normalize(40),marginLeft:"3%"}}>{`￥${thisMonth}`}</Text>
+                    <View style={{width:"100%",flexDirection:"row",justifyContent:"space-between"}}>
+                        <Text style={{borderWidth:0,fontSize:normalize(18),marginLeft:"3%",marginTop:"2%"}}>今月使える金額</Text>
+                        <Progress.Bar progress={monthAvailable===0?0:(thisMonth/monthAvailable)} width={180} height={20} style={{alignSelf:"center",marginRight:"5%"}}/>
+                    </View>
+                        <Text style={{fontSize:normalize(40),marginLeft:"3%"}}>{`￥${thisMonth}`}</Text>
                 </View>
                 </Animatable.View>
             </View>
