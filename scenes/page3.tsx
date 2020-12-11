@@ -4,6 +4,7 @@ import { Header, normalize } from "react-native-elements";
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from "@react-native-community/async-storage";
 import { RFValue } from "react-native-responsive-fontsize";
+import * as FileSystem from 'expo-file-system';
 
 export default function page3() {
 	const [firstDateOfTheMonth, setFirstDateOfTheMonth] = useState(0);

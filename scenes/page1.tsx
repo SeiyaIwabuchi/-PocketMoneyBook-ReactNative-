@@ -31,6 +31,22 @@ function getColorAmount(available:number,income:number){
     return `#${sr}${sg}${sb}`
 }
 
+function getProgressColorAmount(available:number,income:number){
+    let r = Math.floor(146 + ((1 - (income/available)) * 68));
+    r = isNaN(r)?146:r;
+    r = r > 214?214:r;
+    let sr = r < 16?"0" + r.toString(16):r.toString(16);
+    let g = Math.floor(146 + ((income/available)*48));
+    g = isNaN(g)?194:g;
+    g = g < 194?194:g;
+    let sg = g < 16?"0" + g.toString(16):g.toString(16);
+    let b = Math.floor(146 + ((income/available)*68));
+    b = isNaN(b)?194:b;
+    b = b < 194?194:b;
+    let sb = b < 16?"0" + b.toString(16):b.toString(16);
+    return `#${sr}${sg}${sb}`
+}
+
 function getAdjustedMonth(d:Date,firstDateOfTheMonth:number){
     let month = 0;
     if(d.getDate() >= firstDateOfTheMonth){
@@ -196,7 +212,7 @@ export default function page1(props: IProps) {
                     <View style={{alignItems:"flex-start",borderWidth:1,margin:"2%",backgroundColor:getColorAmount(todayAvailable,today),borderColor:"#a3a3a3",borderRadius:20}}>
                         <View style={{width:"100%",flexDirection:"row",justifyContent:"space-between"}}>
                             <Text style={{borderWidth:0,fontSize:normalize(20),marginLeft:"3%",marginTop:"2%"}}>今日使える金額</Text>
-                            <Progress.Bar progress={todayAvailable===0?0:(today/todayAvailable)} width={180} height={20} style={{alignSelf:"center",marginRight:"5%"}}/>
+                            <Progress.Bar progress={todayAvailable===0?0:(today/todayAvailable)} width={180} height={20} style={{alignSelf:"center",marginRight:"5%"}} color={getProgressColorAmount(todayAvailable,today)}/>
                         </View>
                             <Text style={{borderWidth:0,fontSize:normalize(50),marginLeft:"3%"}}>{`￥${today}`}</Text>
                     </View>
@@ -205,7 +221,7 @@ export default function page1(props: IProps) {
                 <View style={{alignItems:"flex-start",borderWidth:1,margin:"2%",backgroundColor:getColorAmount(weekAvailabale,thisWeek),borderColor:"#a3a3a3",borderRadius:20}}>
                     <View style={{width:"100%",flexDirection:"row",justifyContent:"space-between"}}>
                         <Text style={{borderWidth:0,fontSize:normalize(18),marginLeft:"3%",marginTop:"2%"}}>今週使える金額</Text>
-                        <Progress.Bar progress={weekAvailabale===0?0:(thisWeek/weekAvailabale)} width={180} height={20} style={{alignSelf:"center",marginRight:"5%"}}/>
+                        <Progress.Bar progress={weekAvailabale===0?0:(thisWeek/weekAvailabale)} width={180} height={20} style={{alignSelf:"center",marginRight:"5%"}} color={getProgressColorAmount(weekAvailabale,thisWeek)}/>
                     </View>
                         <Text style={{fontSize:normalize(40),marginLeft:"3%"}}>{`￥${thisWeek}`}</Text>
                 </View>
@@ -214,7 +230,7 @@ export default function page1(props: IProps) {
                 <View style={{alignItems:"flex-start",borderWidth:1,margin:"2%",backgroundColor:getColorAmount(monthAvailable,thisMonth),borderColor:"#a3a3a3",borderRadius:20}}>
                     <View style={{width:"100%",flexDirection:"row",justifyContent:"space-between"}}>
                         <Text style={{borderWidth:0,fontSize:normalize(18),marginLeft:"3%",marginTop:"2%"}}>今月使える金額</Text>
-                        <Progress.Bar progress={monthAvailable===0?0:(thisMonth/monthAvailable)} width={180} height={20} style={{alignSelf:"center",marginRight:"5%"}}/>
+                        <Progress.Bar progress={monthAvailable===0?0:(thisMonth/monthAvailable)} width={180} height={20} style={{alignSelf:"center",marginRight:"5%"}} color={getProgressColorAmount(monthAvailable,thisMonth)}/>
                     </View>
                         <Text style={{fontSize:normalize(40),marginLeft:"3%"}}>{`￥${thisMonth}`}</Text>
                 </View>

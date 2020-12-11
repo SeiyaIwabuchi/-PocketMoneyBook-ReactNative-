@@ -1,12 +1,10 @@
-import React from 'react';
 import * as SQLite from 'expo-sqlite';
+import React from 'react';
 import DatabaseConfig from './DatabaseConfig';
 import BalanceData from './BalanceData';
-import { FileSystem } from 'expo';
 
 export function createTable() {
 	const db = SQLite.openDatabase(DatabaseConfig.databaseName);
-	console.log(FileSystem.documentDirectory + 'SQLite/');
 	db.transaction((tx) => {
 		tx.executeSql(
 			"create table if not exists " + DatabaseConfig.tableNames[0] + "(" +
@@ -107,7 +105,7 @@ export function deleteById(successCallBack: () => void, filter: string) {
 			tx.executeSql(
 				`delete from ${DatabaseConfig.tableNames[0]} where ${filter}`,
 				undefined,
-				(_, { rows: SQLResultSetRowList }) => {
+				(_, { }) => {
 					successCallBack();
 				},
 				(tr,error)=>{ console.log(error); return false;}
