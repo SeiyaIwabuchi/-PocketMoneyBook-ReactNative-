@@ -53,7 +53,7 @@ export function select(setDataHandle: (t: BalanceData[]) => void, successCallBac
 	console.log(`select * from ${DatabaseConfig.tableNames[0]} ${filter === undefined ? "" : `where ${filter}`}`);
 	db.transaction((tx) => {
 		tx.executeSql(
-			`select * from ${DatabaseConfig.tableNames[0]} ${filter === undefined ? "" : `where ${filter}`} order by date asc`,
+			`select * from ${DatabaseConfig.tableNames[0]} ${filter === undefined ? "" : `where ${filter}`} order by date desc`,
 			undefined,
 			(_, { rows: SQLResultSetRowList }) => {
 				for (let i = 0; i < SQLResultSetRowList.length; i++) {
