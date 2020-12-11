@@ -106,14 +106,9 @@ function calcBalance(
 			}
 			firstDateOfTheMonth = parseInt(fdotm);
 			if (toDay.getDate() > firstDateOfTheMonth) {
-                //今日が月変わり日前の時（15日始めで10日の時など）
-                //firstDateOfTheMonth - toDay.getDate();
-				daysLeftThisMonth = toDay.getDate() - firstDateOfTheMonth;
-			} else {
-                //今日が月変わり日後（月変わり日を含む）の時(15日初めで16日など)
-                //今月の残り日数 + 来月月変わり日までの日数
-                //daysLeftThisMonth + (firstDateOfTheMonth - 1)
                 daysLeftThisMonth += firstDateOfTheMonth - 1;
+			} else {
+                daysLeftThisMonth = toDay.getDate() - firstDateOfTheMonth;
 			}
 			AsyncStorage.getItem("firstDayOfTheWeek")
 				.then((day) => {
