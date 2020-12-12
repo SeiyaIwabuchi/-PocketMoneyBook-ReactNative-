@@ -197,12 +197,13 @@ export default function page1(props: IProps) {
         },[])
     );
     return (
-        <View style={{ height: Dimensions.get('window').height - 109, flexDirection:"column"}}>{/* ページコンテナ */}
+        <View style={{height:"100%"}}>
             <Header
                 placement={"left"}
                 centerComponent={{ text: "お貧乏様", style: { fontSize: 25 } }}
+                containerStyle={{height:"12%"}}
 			/>
-            <View style={{flexDirection:"column",justifyContent:"space-around"}}>{/* 金額表示コンテナ */}
+            <View style={{height:"43%",justifyContent:"space-around"}}>
                 <Animatable.View animation="fadeInRight" delay={0} ref={(ref)=>{}}>
                     <View style={{alignItems:"flex-start",borderWidth:1,margin:"2%",backgroundColor:getColorAmount(todayAvailable,today),borderColor:"#a3a3a3",borderRadius:20}}>
                         <View style={{width:"100%",flexDirection:"row",justifyContent:"space-between"}}>
@@ -231,12 +232,12 @@ export default function page1(props: IProps) {
                 </View>
                 </Animatable.View>
             </View>
-            <View style={{ alignItems: "flex-start"}}>{/* リストコンテナ */}
+            <View style={{height:"45%"}}>
                 <FlatList 
                 keyExtractor={keyExtractor} 
                 data={balanceDataList} 
                 renderItem={renderItem} 
-                style={{ width: "100%" }} 
+                style={{ width: "100%"}} 
                 ListHeaderComponent={renderItem({item:new BalanceData("日付", "種類", "事柄", "金額")})}
                 stickyHeaderIndices={[0]}
                 />

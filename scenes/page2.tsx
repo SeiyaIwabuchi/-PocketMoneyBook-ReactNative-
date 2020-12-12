@@ -111,7 +111,7 @@ export default function page2(props: IProps) {
 						let data:BalanceData;
 						let tValiResult:ValidationResult;
 						if(mode === "add"){
-							data = new BalanceData(`${date.getMonth()}/${date.getDate()}`, kindText, contentText, priceText,maxId+1);
+							data = new BalanceData(`${date.getMonth()+1}/${date.getDate()}`, kindText, contentText, priceText,maxId+1);
 							tValiResult = validation(data);
 							if (tValiResult.isResult){
 								insertToDb(data);
@@ -119,11 +119,13 @@ export default function page2(props: IProps) {
 								getMaxId((res)=>{
 									setMaxId(res.maxId);
 								});
+								setContentText("");
+								setPriceText("");
 							}else{
 								setSnackbarText(tValiResult.errorText);
 							}
 						}else{
-							data = new BalanceData(`${date.getMonth()}/${date.getDate()}`, kindText, contentText, priceText,mainKey);
+							data = new BalanceData(`${date.getMonth()+1}/${date.getDate()}`, kindText, contentText, priceText,mainKey);
 							tValiResult = validation(data);
 							if(tValiResult.isResult){
 								update(data);
@@ -131,6 +133,8 @@ export default function page2(props: IProps) {
 								getMaxId((res)=>{
 									setMaxId(res.maxId);
 								});
+								setContentText("");
+								setPriceText("");
 							}else{
 								setSnackbarText(tValiResult.errorText);
 							}

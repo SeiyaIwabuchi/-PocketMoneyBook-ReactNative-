@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { View, Picker, Text } from "react-native";
-import { Header, normalize } from "react-native-elements";
+import { View, Picker, Text, Dimensions } from "react-native";
+import { Button, Header, normalize } from "react-native-elements";
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from "@react-native-community/async-storage";
-import { RFValue } from "react-native-responsive-fontsize";
-import * as FileSystem from 'expo-file-system';
+import * as Db from '../DatabaseOperation';
+
 
 export default function page3() {
 	const [firstDateOfTheMonth, setFirstDateOfTheMonth] = useState(0);
@@ -79,6 +79,16 @@ export default function page3() {
 							})()}
 						</Picker>
 					</View>
+						<Button title={"データベース削除"} onPress={()=>{/*Db.deleteTable()*/}}/>
+						<Button title={"データベース初期化"} onPress={()=>{Db.createTable()}}/>
+						<Button title={"データベース確認"} onPress={()=>{Db.select(()=>{},(balaList)=>{console.log(balaList)})}}/>
+						<Button title={"DB2JSON"} onPress={()=>{
+
+						}}/>
+						<Text>{`${Dimensions.get('window').fontScale}`}</Text>
+						<Text>{`${Dimensions.get('window').height}`}</Text>
+						<Text>{`${Dimensions.get('window').width}`}</Text>
+						<Text>{`${Dimensions.get('window').scale}`}</Text>
 				</View>
 			</View>
 		</View>
