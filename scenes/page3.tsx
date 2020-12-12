@@ -1,16 +1,24 @@
 import React, { useState } from "react";
-import { View, Picker, Text, Dimensions } from "react-native";
+import { View, Picker, Text, Dimensions,Clipboard } from "react-native";
 import { Button, Header, normalize } from "react-native-elements";
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from "@react-native-community/async-storage";
 import * as Db from '../DatabaseOperation';
-
+import BalanceData from "../BalanceData";
+import { Snackbar } from "react-native-paper";
+import * as Updates from 'expo-updates';
 
 export default function page3() {
 	const [firstDateOfTheMonth, setFirstDateOfTheMonth] = useState(0);
 	const [firstDayOfTheWeek, setFirstDayOfTheWeek] = useState(-1);
 	const date = new Date();
 	const lastDateOfTheMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+	const [balanceDataList,setBalanceDataList] = useState<BalanceData[]>([]);
+	const [visible,setVisible] = useState(false);
+	const [snackbarText,setSnackbarText] = useState("");
+	const [deleteTableCount,setDeleteTableCount] = useState(0);
+	const [snackbarButtonText,setSnackbarButtonText] = useState("");
+	const [isUpdateAvailable,setIsUpdateAvailable] = useState(false);
 	useFocusEffect(
 		React.useCallback(() => {
 			AsyncStorage.getItem("firstDateOfTheMonth")
@@ -25,6 +33,17 @@ export default function page3() {
 						setFirstDayOfTheWeek(parseInt(date));
 					}
 				});
+				Db.select(setBalanceDataList,(balalist)=>{});
+				( async ()=> {try {
+							const update = await Updates.checkForUpdateAsync();
+							setIsUpdateAvailable(update.isAvailable);
+							} catch (e) {
+							// handle or log error
+								console.log("confirm updates error");
+								console.log(e);
+							}
+						}
+				)();
 		}, [])
 	);
 	return (
@@ -79,16 +98,53 @@ export default function page3() {
 							})()}
 						</Picker>
 					</View>
-						<Button title={"データベース削除"} onPress={()=>{/*Db.deleteTable()*/}}/>
-						<Button title={"データベース初期化"} onPress={()=>{Db.createTable()}}/>
-						<Button title={"データベース確認"} onPress={()=>{Db.select(()=>{},(balaList)=>{console.log(balaList)})}}/>
+						<Button title={"テーブル削除"} onPress={()=>{
+							if(deleteTableCount === 3){
+								setDeleteTableCount(0);
+								Db.deleteTable();
+								setSnackbarText("テーブルを削除しました。");
+								setSnackbarButtonText("OK");
+								setVisible(true);
+							}else{
+								setDeleteTableCount(deleteTableCount+1);
+								setSnackbarText(`あと${3-deleteTableCount}でテーブルを削除します。`);
+								setSnackbarButtonText("CANCEL");
+								setVisible(true);
+							}
+							}}/>
+						<Button title={"テーブル作成"} onPress={()=>{Db.createTable()}}/>
+						<Button title={"テーブル確認"} onPress={()=>{Db.select(()=>{},(balaList)=>{console.log(balaList)})}}/>
 						<Button title={"DB2JSON"} onPress={()=>{
-
+							console.log(JSON.stringify(balanceDataList,null,"\t"));
+							Clipboard.setString(JSON.stringify(balanceDataList,undefined,"\t"));
 						}}/>
-						<Text>{`${Dimensions.get('window').fontScale}`}</Text>
-						<Text>{`${Dimensions.get('window').height}`}</Text>
-						<Text>{`${Dimensions.get('window').width}`}</Text>
-						<Text>{`${Dimensions.get('window').scale}`}</Text>
+						<Button title={"Json読込とDB更新"} onPress={()=>{
+							Clipboard.getString()
+							.then((data)=>{
+								let newBalaData:BalanceData[] = JSON.parse(data);
+								newBalaData.forEach((baladata)=>{
+									Db.insertToDb(baladata);
+								});
+							})
+						}} />
+						<Text>{`New OTA update is ${isUpdateAvailable}`}</Text>
+						<Snackbar
+							visible={visible}
+							onDismiss={() => { setVisible(false) }}
+							action={{
+								label: snackbarButtonText,
+								onPress: ()=>{
+									setDeleteTableCount(0);
+									if(snackbarButtonText === "CANCEL"){
+										setSnackbarText("カウントをリセットしました。");
+										setSnackbarButtonText("OK");
+									}else{
+										setVisible(false);
+									}
+								}
+							}}
+							style={{width:"100%"}}
+						>{snackbarText}</Snackbar>
 				</View>
 			</View>
 		</View>

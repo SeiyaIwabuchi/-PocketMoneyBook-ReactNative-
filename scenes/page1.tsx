@@ -128,17 +128,20 @@ function calcBalance(
 						}
 					} else {
 						daysLeftThisWeek = firstDayOfTheWeek - toDay.getDay();
-					}
+                    }
+                    
 					balanceDataList.forEach((balanceData) => {
 						let price = parseInt(balanceData.price);
-						let recDate = new Date(`${new Date().getFullYear()}/${balanceData.date}`);
+						let recDate = balanceData.date;
 						if (isNaN(price) === false) {
 							if (balanceData.kind === "収入") balance += price;
 							else {
-								if (new Date(`${new Date().getFullYear()}/${balanceData.date}`).getTime() === toDay.getTime()) {
+								if (balanceData.date.getFullYear() === toDay.getFullYear() && 
+                                    balanceData.date.getMonth() === toDay.getMonth() && 
+                                    balanceData.date.getDate() === toDay.getDate()) {
 									spendingToday += price;
                                 }
-                                const balanceDataDate = new Date(`${new Date().getFullYear()}/${balanceData.date}`);
+                                const balanceDataDate = balanceData.date;
 								if (
                                     getWeekNumber(toDay, firstDayOfTheWeek) === getWeekNumber(balanceDataDate, firstDayOfTheWeek) && 
                                     getAdjustedMonth(balanceDataDate,firstDateOfTheMonth) === getAdjustedMonth(new Date(),firstDateOfTheMonth)
@@ -181,7 +184,7 @@ export default function page1(props: IProps) {
             props.navigation.navigate("INPUT");
         }}>
             <ListItem.Content style={{ flexDirection: "row" }}>
-                <Text style={{ textAlign: "center", width: "25%", fontSize: normalize(25) }}>{item.date}</Text>
+                <Text style={{ textAlign: "center", width: "25%", fontSize: normalize(25) }}>{`${item.date.getMonth()+1}/${item.date.getDate()}`}</Text>
                 <Text style={{ textAlign: "center", width: "25%", fontSize: normalize(25) }}>{item.kind}</Text>
                 <Text style={{ textAlign: "center", width: "25%", fontSize: normalize(25) }}>{item.content}</Text>
                 <Text style={{ textAlign: "center", width: "25%", fontSize: normalize(25) }}>{"￥" + item.price}</Text>
@@ -237,8 +240,17 @@ export default function page1(props: IProps) {
                 keyExtractor={keyExtractor} 
                 data={balanceDataList} 
                 renderItem={renderItem} 
-                style={{ width: "100%"}} 
-                ListHeaderComponent={renderItem({item:new BalanceData("日付", "種類", "事柄", "金額")})}
+                style={{ width: "100%"}}
+                ListHeaderComponent={
+                    <ListItem bottomDivider>
+                        <ListItem.Content style={{ flexDirection: "row" }}>
+                            <Text style={{ textAlign: "center", width: "25%", fontSize: normalize(25) }}>{"日付"}</Text>
+                            <Text style={{ textAlign: "center", width: "25%", fontSize: normalize(25) }}>{"種類"}</Text>
+                            <Text style={{ textAlign: "center", width: "25%", fontSize: normalize(25) }}>{"事柄"}</Text>
+                            <Text style={{ textAlign: "center", width: "25%", fontSize: normalize(25) }}>{"金額"}</Text>
+                        </ListItem.Content>
+                    </ListItem>
+                }
                 stickyHeaderIndices={[0]}
                 />
             </View>

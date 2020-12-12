@@ -57,7 +57,14 @@ export function select(setDataHandle: (t: BalanceData[]) => void, successCallBac
 			undefined,
 			(_, { rows: SQLResultSetRowList }) => {
 				for (let i = 0; i < SQLResultSetRowList.length; i++) {
-					list.push(SQLResultSetRowList.item(i));
+					let trow:{date:string,kind:string,content:string,price:string,id:string} = SQLResultSetRowList.item(i);
+					 list.push(new BalanceData(
+						new Date(parseInt(trow.date)),
+						trow.kind,
+						trow.content,
+						trow.price,
+						parseInt(trow.id)
+					));
 				}
 				setDataHandle(list);
 				successCallBack(list);
@@ -65,7 +72,8 @@ export function select(setDataHandle: (t: BalanceData[]) => void, successCallBac
 		);
 	},
 		(error) => {
-			console.log(error)
+			console.log(error);
+			setDataHandle(list);
 		},
 		() => {
 			console.log("get success");
@@ -76,7 +84,7 @@ export function select(setDataHandle: (t: BalanceData[]) => void, successCallBac
 export function insertToDb(row: BalanceData) {
 	const db = SQLite.openDatabase(DatabaseConfig.databaseName);
 	const sql =
-		`insert into ${DatabaseConfig.tableNames[0]} values(${row.id},'${row.date}','${row.kind}','${row.content}',${row.price})`;
+		`insert into ${DatabaseConfig.tableNames[0]} values(${row.id},'${row.date.getTime()}','${row.kind}','${row.content}',${row.price})`;
 	db.transaction((tx) => {
 		tx.executeSql(
 			sql
@@ -127,7 +135,7 @@ export function update(data:BalanceData) {
 		tx.executeSql(
 			"update " + DatabaseConfig.tableNames[0] + 
 			" set " + 
-			`date = '${data.date}',` +
+			`date = '${data.date.getTime()}',` +
 			`kind = '${data.kind}',` +
 			`content = '${data.content}',` +
 			`price = '${data.price}'`  + 

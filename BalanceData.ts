@@ -1,13 +1,13 @@
 import React from 'react'
 
 class BalanceData{
-    date = "";
+    date = new Date();
     kind = "out";
     content = "";
     price = "";
     id = 0;
     static count = 0;
-    constructor(data:string,kind:string,content:string,price:string,id?:number){
+    constructor(data:Date,kind:string,content:string,price:string,id?:number){
         if(id === undefined){
             this.id = BalanceData.count;
             BalanceData.count++;
