@@ -178,7 +178,6 @@ function calcBalance(
                     setTodayAvailable(moneyAvailableToday);
 				});
 		});
-
 }
 
 export default function page1(props: IProps) {
