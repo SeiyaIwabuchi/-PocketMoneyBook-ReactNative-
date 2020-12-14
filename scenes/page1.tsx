@@ -46,17 +46,24 @@ function getProgressColorAmount(available:number,income:number){
     let sb = b < 16?"0" + b.toString(16):b.toString(16);
     return `#${sr}${sg}${sb}`
 }
-
+/*
+getAdjustedMonth
+単体テスト済み
+*/
 function getAdjustedMonth(d:Date,firstDateOfTheMonth:number){
     let month = 0;
     if(d.getDate() >= firstDateOfTheMonth){
         month = d.getMonth();
     }else{
-        month = d.getMonth()-1;
+        month = ((d.getMonth()-1) + 12)%12;
     }
     return month;
 }
-
+/*
+getWeekNumber
+週始め曜日基準の調整後の週番号を返す
+テスト済み
+*/
 function getWeekNumber(d:Date,firstDayOfTheWeek:number){
     let weeklyAdjustmentList = weeklyAdjustment(firstDayOfTheWeek);
 	let date = d.getDate();
@@ -64,6 +71,11 @@ function getWeekNumber(d:Date,firstDayOfTheWeek:number){
     let theFirstDayOfTheMonth = new Date(d.getFullYear(),d.getMonth(),1).getDay(); //2
     return (date - (day - theFirstDayOfTheMonth + 1)) / 7;
 }
+/*
+weeklyAdjustment
+調整後の週番号リストを返す。
+テスト済み
+*/
 function weeklyAdjustment(firstDayOfTheWeek:number){
     //[1,2,3,4,5,6,7]
     let list:number[] = [];
@@ -120,10 +132,12 @@ function calcBalance(
 					}
 					firstDayOfTheWeek = parseInt(fdotw);
 					if (toDay.getDay() >= firstDayOfTheWeek) {
-						daysLeftThisWeek = 8 - toDay.getDay();
-						if (getWeekNumber(toDay, firstDayOfTheWeek) ===
-							getWeekNumber(new Date(toDay.getFullYear(), getAdjustedMonth(toDay, firstDateOfTheMonth) + 1, 11), firstDayOfTheWeek)
-						) {
+                        daysLeftThisWeek = 8 - toDay.getDay();
+                        let dayOfNextMonth = new Date(toDay.getFullYear(), getAdjustedMonth(toDay, firstDateOfTheMonth) + 1, firstDateOfTheMonth);
+                        if (getWeekNumber(toDay, firstDayOfTheWeek) === getWeekNumber(dayOfNextMonth,firstDayOfTheWeek) && 
+                            toDay.getMonth() == dayOfNextMonth.getMonth()
+                        ) {//調整後月末の週番号と調整後週末の曜日番号が同じだった時
+                            //今週の残り日数は月始め日-今日
 							daysLeftThisWeek = firstDateOfTheMonth - toDay.getDate();
 						}
 					} else {
