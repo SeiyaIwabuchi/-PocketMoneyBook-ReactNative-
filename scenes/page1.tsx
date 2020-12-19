@@ -120,7 +120,7 @@ function calcBalance(
 			if (toDay.getDate() > firstDateOfTheMonth) {
                 daysLeftThisMonth += firstDateOfTheMonth - 1;
 			} else {
-                daysLeftThisMonth = toDay.getDate() - firstDateOfTheMonth;
+                daysLeftThisMonth = firstDateOfTheMonth - toDay.getDate() + 1;
 			}
 			AsyncStorage.getItem("firstDayOfTheWeek")
 				.then((day) => {
